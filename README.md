@@ -67,6 +67,9 @@ Then try the examples:
 # See all your workouts
 npm run example:user-workouts
 
+# Search for workouts by name
+npm run example:workout:name "Upper Body"
+
 # Get your user info
 npm run example:user
 
@@ -150,8 +153,15 @@ console.log(`You have ${dailyLifts.length} daily lifts`)
 // Get daily lifts with specific timezone
 const dailyLiftsEST = await client.getDailyLifts('America/New_York')
 
-// Get specific workout details  
+// Get specific workout details
 const workout = await client.getWorkoutById('workout-uuid')
+
+// Search for workouts by name (case-insensitive partial match)
+const workouts = await client.getUserWorkouts(0, 50)
+const matches = workouts.filter(w =>
+  w.title.toLowerCase().includes('upper body')
+)
+console.log(`Found ${matches.length} matching workouts`)
 
 // Get shared workout
 const sharedWorkout = await client.getWorkoutByShareUrl('https://share.tonal.com/workout/...')
@@ -425,6 +435,7 @@ const chestMovements = movements.filter(m =>
 - `npm run example:goals` - Show available goals
 - `npm run example:user-workouts` - List your workouts
 - `npm run example:workout:id <id>` - Get specific workout
+- `npm run example:workout:name <name>` - Search for workouts by name
 - `npm run example:workout:share <url>` - Get shared workout
 - `npm run example:estimate` - Estimate workout duration
 - `npm run example:create-workout` - Create a new workout
